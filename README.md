@@ -1,54 +1,56 @@
 # NextSupa
 
-Starter kit **Next.js (App Router) + Supabase** yang bersih dan ramah pemula. Sudah termasuk auth SSR, proteksi route, Server Actions, dan tipe database.
+English | [Bahasa Indonesia](README.id.md)
 
-## Isi
+A **Next.js (App Router) + Supabase** starter kit. Includes SSR auth, route protection, Server Actions, and database types.
 
-- Next.js 16 (App Router) + TypeScript strict + Tailwind CSS 4
-- Auth Supabase SSR dengan `@supabase/ssr` dan `@supabase/supabase-js`
-- Halaman: landing (`/`), login, signup, dashboard
-- Proxy (middleware) yang me-refresh token dan memproteksi `/dashboard`
-- Placeholder tipe `Database`
+## Features
 
-## Coba dulu tanpa Supabase (mode demo)
+- Next.js 16 (App Router) + strict TypeScript + Tailwind CSS 4
+- Supabase SSR auth with `@supabase/ssr` and `@supabase/supabase-js`
+- Pages: landing (`/`), login, signup, dashboard
+- Proxy (middleware) that refreshes the token and protects `/dashboard`
+- Placeholder `Database` types
 
-Mau lihat aplikasinya dulu sebelum punya project Supabase? Pakai mode demo. Login dan dashboard jalan dengan data dummy.
+## Try it without Supabase (demo mode)
+
+Want to see the app before you have a Supabase project? Use demo mode. Login and dashboard work with dummy data.
 
 ```bash
 npm install
 npm run dev
 ```
 
-`.env.local` bawaan sudah berisi `NEXT_PUBLIC_DEMO_MODE=true`. Buka [http://localhost:3000/login](http://localhost:3000/login), form sudah terisi akun dummy:
+The default `.env.local` already contains `NEXT_PUBLIC_DEMO_MODE=true`. Open [http://localhost:3000/login](http://localhost:3000/login). The form is pre-filled with a dummy account:
 
 | Email | Password |
 | --- | --- |
 | `demo@nextsupa.dev` | `password123` |
 
-Yang berlaku di mode demo:
+In demo mode:
 
-- Login hanya menerima akun dummy di atas.
-- `/signup` menerima email apa saja, tidak ada yang disimpan.
-- Dashboard menampilkan statistik, aktivitas, dan todo dummy dari `src/lib/demo-data.ts`.
-- Tidak ada request ke Supabase.
+- Login only accepts the dummy account above.
+- `/signup` accepts any email, nothing is stored.
+- The dashboard shows dummy stats, activity, and todos from `src/lib/demo-data.ts`.
+- No requests go to Supabase.
 
-**Matikan mode demo** saat Supabase asli sudah siap: ubah `NEXT_PUBLIC_DEMO_MODE=false` (atau hapus barisnya) di `.env.local`, lalu restart `npm run dev`. Env var dibaca saat server start, jadi restart wajib.
+**Turn demo mode off** once your real Supabase project is ready: set `NEXT_PUBLIC_DEMO_MODE=false` (or delete the line) in `.env.local`, then restart `npm run dev`. Env vars are read at server start, so a restart is required.
 
-> **Keamanan:** sesi demo hanya cookie biasa yang tidak ditandatangani, siapa pun bisa memalsukannya. Karena itu mode demo otomatis mati di build produksi (`NODE_ENV=production`), apa pun nilai `NEXT_PUBLIC_DEMO_MODE`. Jangan jadikan mode demo pengganti auth asli.
+> **Security:** the demo session is a plain unsigned cookie, anyone can forge it. Because of that, demo mode is automatically disabled in production builds (`NODE_ENV=production`), whatever the value of `NEXT_PUBLIC_DEMO_MODE`. Do not use demo mode as a replacement for real auth.
 
-## Mulai cepat (dengan Supabase)
+## Quick start (with Supabase)
 
-### 1. Install dependency
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Buat project Supabase
+### 2. Create a Supabase project
 
-Buat project di [supabase.com/dashboard](https://supabase.com/dashboard), lalu salin **Project URL** dan **anon key** dari Project Settings, API.
+Create a project at [supabase.com/dashboard](https://supabase.com/dashboard), then copy the **Project URL** and **anon key** from Project Settings, API.
 
-### 3. Isi environment variables
+### 3. Set environment variables
 
 ```bash
 cp .env.example .env.local
@@ -56,36 +58,36 @@ cp .env.example .env.local
 
 Edit `.env.local`:
 
-| Variabel | Fungsi |
+| Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | URL project Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon (public) key. Aman di browser karena dilindungi RLS |
-| `NEXT_PUBLIC_SITE_URL` | URL situs ini, dipakai untuk link konfirmasi email. Lokal: `http://localhost:3000` |
-| `NEXT_PUBLIC_DEMO_MODE` | Set `false` agar memakai Supabase asli. Lihat bagian mode demo di atas |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon (public) key. Safe in the browser because RLS protects your data |
+| `NEXT_PUBLIC_SITE_URL` | URL of this site, used for email confirmation links. Local: `http://localhost:3000` |
+| `NEXT_PUBLIC_DEMO_MODE` | Set to `false` to use real Supabase. See the demo mode section above |
 
-Penting: ubah `NEXT_PUBLIC_DEMO_MODE` ke `false`, kalau tidak login tetap memakai akun dummy.
+Important: set `NEXT_PUBLIC_DEMO_MODE` to `false`, otherwise login keeps using the dummy account.
 
-### 4. Atur Redirect URL di Supabase
+### 4. Set the redirect URL in Supabase
 
-Buka Authentication, URL Configuration, lalu tambahkan ke **Redirect URLs**:
+Go to Authentication, URL Configuration, and add to **Redirect URLs**:
 
 ```
 http://localhost:3000/auth/callback
 ```
 
-Saat deploy, tambahkan juga `https://domain-kamu.com/auth/callback`. Tanpa ini, link konfirmasi email tidak bisa masuk ke aplikasi.
+When you deploy, also add `https://your-domain.com/auth/callback`. Without it, email confirmation links cannot reach the app.
 
-Opsional untuk development: matikan **Confirm email** di Authentication, Providers, Email supaya signup langsung login.
+Optional for development: turn off **Confirm email** under Authentication, Providers, Email so signup logs in right away.
 
-### 5. Jalankan
+### 5. Run
 
 ```bash
 npm run dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000). Coba daftar di `/signup`, lalu buka `/dashboard`.
+Open [http://localhost:3000](http://localhost:3000). Sign up at `/signup`, then open `/dashboard`.
 
-## Struktur folder
+## Folder structure
 
 ```
 src/
@@ -93,42 +95,42 @@ src/
 │   ├── (auth)/
 │   │   ├── login/
 │   │   │   ├── actions.ts     # Server Actions: login, signup, logout
-│   │   │   └── page.tsx       # Halaman /login
-│   │   └── signup/page.tsx    # Halaman /signup
-│   ├── auth/callback/route.ts # Tukar ?code= dari email jadi session
-│   ├── dashboard/page.tsx     # Halaman terproteksi
+│   │   │   └── page.tsx       # /login page
+│   │   └── signup/page.tsx    # /signup page
+│   ├── auth/callback/route.ts # Exchanges the ?code= from email for a session
+│   ├── dashboard/page.tsx     # Protected page
 │   ├── layout.tsx
 │   └── page.tsx               # Landing page
 ├── lib/
-│   ├── auth.ts                # getCurrentUser(): satu pintu cek user (demo atau Supabase)
-│   ├── demo.ts                # Flag mode demo + akun dummy
-│   ├── demo-data.ts           # Data dummy dashboard
-│   ├── demo-session.ts        # Cookie sesi palsu untuk mode demo
+│   ├── auth.ts                # getCurrentUser(): one place to check the user (demo or Supabase)
+│   ├── demo.ts                # Demo mode flag + dummy account
+│   ├── demo-data.ts           # Dummy dashboard data
+│   ├── demo-session.ts        # Fake session cookie for demo mode
 │   └── supabase/
-│       ├── client.ts          # Client untuk Client Components
-│       ├── server.ts          # Client untuk Server Components dan Actions
-│       └── middleware.ts      # updateSession: refresh token + proteksi route
-├── proxy.ts                   # Entry proxy Next.js, memanggil updateSession
-└── types/database.types.ts    # Tipe Database (placeholder)
+│       ├── client.ts          # Client for Client Components
+│       ├── server.ts          # Client for Server Components and Actions
+│       └── middleware.ts      # updateSession: refresh token + route protection
+├── proxy.ts                   # Next.js proxy entry, calls updateSession
+└── types/database.types.ts    # Database types (placeholder)
 ```
 
-## Cara kerja auth
+## How auth works
 
-1. **Proxy** (`src/proxy.ts`) berjalan di setiap request. Ia memanggil `updateSession` yang me-refresh token dan menulis ulang cookie.
-2. Guest yang membuka `/dashboard` diarahkan ke `/login`. User yang sudah login dan membuka `/login` atau `/signup` diarahkan ke `/dashboard`.
-3. Form login, signup, dan logout memanggil **Server Actions** di `login/actions.ts`. Tidak ada API route.
-4. Halaman terproteksi tetap mengecek user sendiri lewat `getCurrentUser()` (`src/lib/auth.ts`), yang memanggil `supabase.auth.getUser()`. Proxy hanya lapisan pertama, bukan satu-satunya pengaman.
+1. The **proxy** (`src/proxy.ts`) runs on every request. It calls `updateSession`, which refreshes the token and rewrites the cookies.
+2. Guests opening `/dashboard` are redirected to `/login`. Logged-in users opening `/login` or `/signup` are redirected to `/dashboard`.
+3. The login, signup, and logout forms call **Server Actions** in `login/actions.ts`. No API routes.
+4. Protected pages still check the user themselves with `getCurrentUser()` (`src/lib/auth.ts`), which calls `supabase.auth.getUser()`. The proxy is the first layer, not the only safeguard.
 
-> Selalu pakai `getUser()` untuk cek auth di server, bukan `getSession()`. `getUser()` memvalidasi token ke Supabase, `getSession()` hanya membaca cookie.
+> Always use `getUser()` to check auth on the server, not `getSession()`. `getUser()` validates the token with Supabase, `getSession()` only reads the cookie.
 
-## Memakai Supabase di kode kamu
+## Using Supabase in your code
 
 **Server Component, Server Action, Route Handler:**
 
 ```ts
 import { createClient } from "@/lib/supabase/server";
 
-const supabase = await createClient(); // async, karena cookies() async
+const supabase = await createClient(); // async, because cookies() is async
 const { data } = await supabase.from("todos").select("*");
 ```
 
@@ -141,47 +143,47 @@ import { createClient } from "@/lib/supabase/client";
 const supabase = createClient();
 ```
 
-Alias `@/` menunjuk ke folder `src/`.
+The `@/` alias points to the `src/` folder.
 
-## Generate tipe database
+## Generate database types
 
-`src/types/database.types.ts` masih placeholder kosong. Setelah membuat tabel, generate tipe asli:
+`src/types/database.types.ts` is an empty placeholder. After you create tables, generate the real types:
 
 ```bash
 npx supabase login
 npx supabase gen types typescript --project-id <project-ref> > src/types/database.types.ts
 ```
 
-`<project-ref>` ada di URL project: `https://<project-ref>.supabase.co`. Setelah itu semua query ter-autocomplete.
+`<project-ref>` is in your project URL: `https://<project-ref>.supabase.co`. After that, every query is autocompleted.
 
-## Menambah route terproteksi
+## Add protected routes
 
-Proteksi saat ini hanya untuk path yang diawali `/dashboard`. Untuk route lain, ubah kondisi di `src/lib/supabase/middleware.ts`:
+Only paths starting with `/dashboard` are protected for now. For other routes, change the condition in `src/lib/supabase/middleware.ts`:
 
 ```ts
 if (!isLoggedIn && pathname.startsWith("/dashboard")) {
 ```
 
-Ganti jadi daftar prefix jika butuh lebih dari satu, misalnya `["/dashboard", "/settings"].some((p) => pathname.startsWith(p))`.
+Switch to a list of prefixes if you need more than one, for example `["/dashboard", "/settings"].some((p) => pathname.startsWith(p))`.
 
-## Catatan Next.js 16
+## Next.js 16 notes
 
-- `middleware.ts` diganti nama menjadi **`proxy.ts`** dengan fungsi `proxy`. Perilakunya sama.
-- `cacheComponents` aktif di `next.config.ts`. Bagian halaman yang membaca cookie atau `searchParams` harus dibungkus `<Suspense>`, seperti di halaman login dan dashboard. Kalau tidak, build gagal.
+- `middleware.ts` was renamed to **`proxy.ts`** with a `proxy` function. Same behavior.
+- `cacheComponents` is enabled in `next.config.ts`. Parts of a page that read cookies or `searchParams` must be wrapped in `<Suspense>`, as in the login and dashboard pages. Otherwise the build fails.
 
-## Script
+## Scripts
 
-| Perintah | Fungsi |
+| Command | Purpose |
 | --- | --- |
 | `npm run dev` | Dev server |
-| `npm run build` | Build produksi |
-| `npm run start` | Jalankan hasil build |
+| `npm run build` | Production build |
+| `npm run start` | Run the build |
 | `npm run lint` | ESLint |
 
 ## Deploy
 
-Set tiga environment variable di atas di platform hosting (misalnya Vercel). Isi `NEXT_PUBLIC_SITE_URL` dengan domain produksi, dan daftarkan `<domain>/auth/callback` di Redirect URLs Supabase.
+Set the Supabase variables and `NEXT_PUBLIC_SITE_URL` on your hosting platform (for example Vercel). Set `NEXT_PUBLIC_SITE_URL` to your production domain, and register `<domain>/auth/callback` in the Supabase Redirect URLs. Demo mode is always off in production builds.
 
-## Lisensi
+## License
 
-Bebas dipakai untuk project pribadi maupun klien.
+[MIT](LICENSE). Free to use for personal, client, and commercial projects.
